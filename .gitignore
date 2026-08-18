@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+.env
+.venv/
+venv/
+*.pt
+*.safetensors
+corpus_small.txt
+merges_16k.txt
+vocab_16k.json
+.DS_Store
