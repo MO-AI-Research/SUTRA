@@ -1,8 +1,17 @@
-# SuTRA — Training Code
+# SuTRA — Structurally-Unified Tokenization with Root Awareness
 
-Reference implementation of the SuTRA tokenizer training algorithm from [*SuTRA: Structurally-Unified Tokenization with Root Awareness*](SuTRA_Interspeech2026.pdf) (Interspeech 2026).
+[![Interspeech 2026](https://img.shields.io/badge/Interspeech-2026-1f6feb.svg)](https://www.interspeech2026.org/)
+[![arXiv](https://img.shields.io/badge/arXiv-2608.18087-b31b1b.svg)](https://arxiv.org/abs/2608.18087)
+[![Project Page](https://img.shields.io/badge/Project-Page-brightgreen.svg)](https://mo-vaibhavr-43300.github.io/SuTRA/)
+[![Python 3.8+](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://www.python.org/)
 
-Project page: https://mo-vaibhavr-43300.github.io/SuTRA/
+> **Accepted at INTERSPEECH 2026.**
+
+Reference implementation of the SuTRA tokenizer training algorithm from
+[**SuTRA: Structurally-Unified Tokenization with Root Awareness**](https://arxiv.org/abs/2608.18087) (Interspeech 2026).
+
+📄 **Paper:** [arXiv:2608.18087](https://arxiv.org/abs/2608.18087) &nbsp;|&nbsp;
+🌐 **Project page:** [mo-vaibhavr-43300.github.io/SuTRA](https://mo-vaibhavr-43300.github.io/SuTRA/)
 
 This repo contains the core two-phase training pipeline: akshara-aware pre-tokenization, morphological boundary probing, and score-based BPE merging with rigidity annealing.
 
@@ -19,11 +28,11 @@ This repo contains the core two-phase training pipeline: akshara-aware pre-token
 
 Merge pairs by score rather than raw frequency:
 
-\[
-S(a, b) = f(a, b) \cdot \Psi(a, b)^{\gamma_t}, \quad \Psi(a, b) = 1 - \frac{\chi(a, b)}{f(a, b)}
-\]
+$$
+S(a, b) = f(a, b) \cdot \Psi(a, b)^{\gamma_t}, \qquad \Psi(a, b) = 1 - \frac{\chi(a, b)}{f(a, b)}
+$$
 
-where \(f\) is pair frequency, \(\chi\) counts boundary violations, and \(\gamma_t\) anneals linearly from \(\gamma_{\text{start}}\) to \(\gamma_{\text{end}}\).
+where $f$ is pair frequency, $\chi$ counts boundary violations, and $\gamma_t$ anneals linearly from $\gamma_{\text{start}}$ to $\gamma_{\text{end}}$.
 
 ---
 
@@ -32,7 +41,7 @@ where \(f\) is pair frequency, \(\chi\) counts boundary violations, and \(\gamma
 | File | Role |
 |------|------|
 | `phase1.py` | `SUTRA_Phase1` — akshara grouping, gold-lexicon lookup, ByT5 boundary inference |
-| `phase2.py` | `SUTRATrainer` — score-based BPE with \(\Psi\) penalty and \(\gamma\) annealing |
+| `phase2.py` | `SUTRATrainer` — score-based BPE with $\Psi$ penalty and $\gamma$ annealing |
 | `pilot.py` | End-to-end runner; writes `vocab_16k.json` and `merges_16k.txt` |
 
 ---
@@ -58,12 +67,12 @@ The morphological gold lexicon used with SuTRA can be built with [SampoNLP](http
 Edit paths in `pilot.py`:
 
 ```python
-CORPUS_PATH = "corpus_small.txt"
-CSV_PATH = "hindi_morph_splits.csv"
-MODEL_PATH = "./byt5_model"
-TARGET_VOCAB = 16000
-GAMMA_START = 4.0
-GAMMA_END = 0.0
+CORPUS_PATH   = "corpus_small.txt"
+CSV_PATH      = "hindi_morph_splits.csv"
+MODEL_PATH    = "./byt5_model"
+TARGET_VOCAB  = 16000
+GAMMA_START   = 4.0
+GAMMA_END     = 0.0
 ```
 
 Run the full pipeline:
@@ -99,6 +108,24 @@ Corpus (UTF-8)
 
 ---
 
+## Citation
+
+If you use SuTRA in your work, please cite:
+
+```bibtex
+@misc{rathore2026sutrastructurallyunifiedtokenization,
+      title={SuTRA : Structurally-Unified Tokenization with Root Awareness},
+      author={Vaibhav Rathore and Siddhant Gole and Dadhichi Telwadkar and Rooshil Bhatia and Maulik Ruparel and Siddharth Surekha and Neha Bhargava},
+      year={2026},
+      eprint={2608.18087},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2608.18087},
+}
+```
+
+---
+
 ## Related work
 
 **SampoNLP** — morphological lexicon toolkit used in the paper's dataset pipeline:
@@ -110,4 +137,6 @@ Corpus (UTF-8)
 
 ## Authors
 
-Vaibhav Rathore, Siddhant Gole, Dadhichi Telwadkar, Rooshil Bhatia, Maulik Ruparel, Siddharth Sureka, Neha Bhargava — Motilal Oswal Financial Services Ltd. & IIT Bombay.
+Vaibhav Rathore, Siddhant Gole, Dadhichi Telwadkar, Rooshil Bhatia, Maulik Ruparel, Siddharth Sureka, Neha Bhargava
+
+Motilal Oswal Financial Services Ltd. & IIT Bombay.
